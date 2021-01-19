@@ -175,8 +175,6 @@ architecture structural of csrunit is
   signal ds17                                     : contranomy_types.tup2_8;
   -- src/Contranomy/Core/CSR.hs:87:23-47
   signal t                                        : contranomy_types.csrtype;
-  -- src/Contranomy/Core/CSR.hs:86:23-32
-  signal t_0                                      : contranomy_types.csrtype;
   -- src/Contranomy/Core/CSR.hs:(85,33)-(87,47)
   signal \c$ds17_case_scrut\                      : contranomy_types.csrop;
   -- src/Contranomy/Core/CSR.hs:(89,9)-(92,43)
@@ -200,7 +198,7 @@ begin
     \c$case_alt\ <= \c$case_alt_0\ when "1110011",
                     \c$case_alt_1\ when others;
 
-  \c$case_alt_0_selection_res\ <= \c$case_scrut\.decodedinstruction_sel15_func3 /= std_logic_vector'("000");
+  \c$case_alt_0_selection_res\ <= \c$case_scrut\.decodedinstruction_sel15_func3 /= "000";
 
   -- src/Contranomy/Core/CSR.hs:64:5-14
   \c$case_alt_0\ <= \c$case_alt_2\ when \c$case_alt_0_selection_res\ else
@@ -208,7 +206,7 @@ begin
 
   -- src/Contranomy/Core/CSR.hs:154:5-13
   -- src/Contranomy/Core/CSR.hs:155:5-31
-  \c$case_alt_1\ <= ( tup2_2_sel0_tup2_1 => ( tup2_1_sel0_maybe_0 => std_logic_vector'("0" & "--------------------------------")
+  \c$case_alt_1\ <= ( tup2_2_sel0_tup2_1 => ( tup2_1_sel0_maybe_0 => "0" & "--------------------------------"
                     , tup2_1_sel1_std_logic_vector => std_logic_vector'(0 to 31 => '-') )
                     , tup2_2_sel1_machinestate => \c$arg\ );
 
@@ -218,17 +216,17 @@ begin
 
   -- src/Contranomy/Core/CSR.hs:154:5-13
   -- src/Contranomy/Core/CSR.hs:155:5-31
-  \c$case_alt_3\ <= ( tup2_2_sel0_tup2_1 => ( tup2_1_sel0_maybe_0 => std_logic_vector'("0" & "--------------------------------")
+  \c$case_alt_3\ <= ( tup2_2_sel0_tup2_1 => ( tup2_1_sel0_maybe_0 => "0" & "--------------------------------"
                     , tup2_1_sel1_std_logic_vector => std_logic_vector'(0 to 31 => '-') )
                     , tup2_2_sel1_machinestate => \c$arg\ );
 
   -- src/Contranomy/Core/CSR.hs:154:5-13
   -- src/Contranomy/Core/CSR.hs:155:5-31
-  \c$case_alt_4\ <= ( tup2_2_sel0_tup2_1 => ( tup2_1_sel0_maybe_0 => std_logic_vector'("0" & "--------------------------------")
+  \c$case_alt_4\ <= ( tup2_2_sel0_tup2_1 => ( tup2_1_sel0_maybe_0 => "0" & "--------------------------------"
                     , tup2_1_sel1_std_logic_vector => std_logic_vector'(0 to 31 => '-') )
                     , tup2_2_sel1_machinestate => \c$arg\ );
 
-  result_0 <= ( tup2_2_sel0_tup2_1 => ( tup2_1_sel0_maybe_0 => std_logic_vector'("1" & (\oldValue1\))
+  result_0 <= ( tup2_2_sel0_tup2_1 => ( tup2_1_sel0_maybe_0 => "1" & \oldValue1\
               , tup2_1_sel1_std_logic_vector => result_4 )
               , tup2_2_sel1_machinestate => ( machinestate_sel0_mstatus => ( mstatus_sel0_mie => \c$app_arg\
               , mstatus_sel1_mpie => \c$app_arg_1\ )
@@ -247,30 +245,37 @@ begin
                     \c$case_alt_9\;
 
   -- src/Contranomy/Core/CSR.hs:94:10-28
-  lvl17 <= \c$case_scrut\.decodedinstruction_sel12_imm12i = std_logic_vector'(x"301");
+  lvl17 <= \c$case_scrut\.decodedinstruction_sel12_imm12i = CSR_MISA;
 
-  lvl1 <= ( tup2_1_sel0_maybe_0 => std_logic_vector'("1" & (std_logic_vector'(x"40000100")))
+  lvl1 <= ( tup2_1_sel0_maybe_0 => "1" & x"40000100"
           , tup2_1_sel1_std_logic_vector => result_1 );
 
   -- src/Contranomy/Core/CSR.hs:(164,1)-(173,32)
-  result_1 <= \c$case_alt_8\ when std_match("01", \csrType1\) else
-              \c$case_alt_7\ when std_match("10", \csrType1\) else
-              \c$case_alt_6\ when std_match("11", \csrType1\) else
-              std_logic_vector'(x"40000100");
+  with \csrType1\ select
+      result_1 <= \c$case_alt_8\ when READ_WRITE,
+                  \c$case_alt_7\ when READ_SET,
+                  \c$case_alt_6\ when READ_CLEAR,
+                  x"40000100" when others;
+
+  with \csrType1\ select
+      result_2 <= \c$case_alt_12\ when READ_WRITE,
+                  \c$case_alt_11\ when READ_SET,
+                  \c$case_alt_10\ when READ_CLEAR,
+                  \oldValue\ when others;
 
   -- src/Contranomy/Core/CSR.hs:171:3-56
   with (\c$writeValue1_case_alt\(32 downto 32)) select
-    \c$case_alt_6\ <= std_logic_vector'(x"40000100") when "0",
-                      std_logic_vector'(x"40000100") and (not x) when others;
+    \c$case_alt_6\ <= x"40000100" when "0",
+                      x"40000100" and (not x) when others;
 
   -- src/Contranomy/Core/CSR.hs:168:3-41
   with (\c$writeValue1_case_alt\(32 downto 32)) select
-    \c$case_alt_7\ <= std_logic_vector'(x"40000100") when "0",
-                      std_logic_vector'(x"40000100") or x when others;
+    \c$case_alt_7\ <= x"40000100" when "0",
+                      x"40000100" or x when others;
 
   -- src/Contranomy/Core/CSR.hs:165:3-29
   with (\c$writeValue1_case_alt\(32 downto 32)) select
-    \c$case_alt_8\ <= std_logic_vector'(x"40000100") when "0",
+    \c$case_alt_8\ <= x"40000100" when "0",
                       x when others;
 
   x <= \c$writeValue1_case_alt\(31 downto 0);
@@ -281,16 +286,10 @@ begin
                     \c$case_alt_13\;
 
   -- src/Contranomy/Core/CSR.hs:94:10-28
-  lvl16 <= \c$case_scrut\.decodedinstruction_sel12_imm12i = std_logic_vector'(x"344");
+  lvl16 <= \c$case_scrut\.decodedinstruction_sel12_imm12i = TRAP_MIP;
 
   lvl4 <= ( tup2_1_sel0_maybe_0 => lvl2
           , tup2_1_sel1_std_logic_vector => result_2 );
-
-  -- src/Contranomy/Core/CSR.hs:(164,1)-(173,32)
-  result_2 <= \c$case_alt_12\ when std_match("01", \csrType1\) else
-              \c$case_alt_11\ when std_match("10", \csrType1\) else
-              \c$case_alt_10\ when std_match("11", \csrType1\) else
-              \oldValue\;
 
   -- src/Contranomy/Core/CSR.hs:171:3-56
   with (\c$writeValue1_case_alt\(32 downto 32)) select
@@ -310,14 +309,14 @@ begin
   x_0 <= \c$writeValue1_case_alt\(31 downto 0);
 
   -- src/Contranomy/Core/CSR.hs:110:16-40
-  lvl2 <= std_logic_vector'("1" & (\oldValue\));
+  lvl2 <= "1" & \oldValue\;
 
   -- src/Contranomy/Core/CSR.hs:(106,13)-(108,47)
   -- src/Contranomy/Core/CSR.hs:(106,24)-(108,47)
   \oldValue\ <= (\c$oldValue_app_arg_1\ or \c$oldValue_app_arg_0\) or \c$oldValue_app_arg\;
 
   -- src/Contranomy/Instruction.hs:278:22-38
-  \c$case_alt_13\ <= ( tup2_2_sel0_tup2_1 => ( tup2_1_sel0_maybe_0 => std_logic_vector'("1" & (\c$oldValue1_0\))
+  \c$case_alt_13\ <= ( tup2_2_sel0_tup2_1 => ( tup2_1_sel0_maybe_0 => "1" & \c$oldValue1_0\
                      , tup2_1_sel1_std_logic_vector => result_4 )
                      , tup2_2_sel1_machinestate => ( machinestate_sel0_mstatus => \c$arg\.machinestate_sel0_mstatus
                      , machinestate_sel1_mcause => \c$arg\.machinestate_sel1_mcause
@@ -332,7 +331,7 @@ begin
                      \c$case_alt_14\;
 
   -- src/Contranomy/Instruction.hs:279:22-38
-  \c$case_alt_14\ <= ( tup2_2_sel0_tup2_1 => ( tup2_1_sel0_maybe_0 => std_logic_vector'("1" & (\c$oldValue1_1\))
+  \c$case_alt_14\ <= ( tup2_2_sel0_tup2_1 => ( tup2_1_sel0_maybe_0 => "1" & \c$oldValue1_1\
                      , tup2_1_sel1_std_logic_vector => result_4 )
                      , tup2_2_sel1_machinestate => ( machinestate_sel0_mstatus => \c$arg\.machinestate_sel0_mstatus
                      , machinestate_sel1_mcause => \c$arg\.machinestate_sel1_mcause
@@ -347,7 +346,7 @@ begin
   -- src/Contranomy/Core/CSR.hs:(114,17)-(117,21)
   \c$app_arg\ <= \c$app_arg_0\ = ('1');
 
-  -- indexBitVector begin 
+  -- indexBitVector begin
   indexbitvector : block
     signal vec_index : integer range 0 to 32-1;
   begin
@@ -364,7 +363,7 @@ begin
   -- src/Contranomy/Core/CSR.hs:(114,17)-(117,21)
   \c$app_arg_1\ <= \c$app_arg_2\ = ('1');
 
-  -- indexBitVector begin 
+  -- indexBitVector begin
   indexbitvector_0 : block
     signal vec_index_0 : integer range 0 to 32-1;
   begin
@@ -378,7 +377,7 @@ begin
   end block;
   -- indexBitVector end
 
-  -- indexBitVector begin 
+  -- indexBitVector begin
   indexbitvector_1 : block
     signal vec_index_1 : integer range 0 to 32-1;
   begin
@@ -393,7 +392,7 @@ begin
   -- indexBitVector end
 
   -- src/Contranomy/Instruction.hs:286:20-36
-  \c$case_alt_15\ <= ( tup2_2_sel0_tup2_1 => ( tup2_1_sel0_maybe_0 => std_logic_vector'("1" & (\c$arg\.machinestate_sel4_mscratch))
+  \c$case_alt_15\ <= ( tup2_2_sel0_tup2_1 => ( tup2_1_sel0_maybe_0 => "1" & \c$arg\.machinestate_sel4_mscratch
                      , tup2_1_sel1_std_logic_vector => result_4 )
                      , tup2_2_sel1_machinestate => ( machinestate_sel0_mstatus => \c$arg\.machinestate_sel0_mstatus
                      , machinestate_sel1_mcause => \c$arg\.machinestate_sel1_mcause
@@ -406,7 +405,7 @@ begin
                      \c$case_alt_16\;
 
   -- src/Contranomy/Instruction.hs:287:20-36
-  \c$case_alt_16\ <= ( tup2_2_sel0_tup2_1 => ( tup2_1_sel0_maybe_0 => std_logic_vector'("1" & (\c$oldValue1_2\))
+  \c$case_alt_16\ <= ( tup2_2_sel0_tup2_1 => ( tup2_1_sel0_maybe_0 => "1" & \c$oldValue1_2\
                      , tup2_1_sel1_std_logic_vector => result_4 )
                      , tup2_2_sel1_machinestate => ( machinestate_sel0_mstatus => \c$arg\.machinestate_sel0_mstatus
                      , machinestate_sel1_mcause => \c$arg\.machinestate_sel1_mcause
@@ -419,7 +418,7 @@ begin
                      \c$case_alt_17\;
 
   -- src/Contranomy/Instruction.hs:288:20-36
-  \c$case_alt_17\ <= ( tup2_2_sel0_tup2_1 => ( tup2_1_sel0_maybe_0 => std_logic_vector'("1" & (\c$oldValue1_3\))
+  \c$case_alt_17\ <= ( tup2_2_sel0_tup2_1 => ( tup2_1_sel0_maybe_0 => "1" & \c$oldValue1_3\
                      , tup2_1_sel1_std_logic_vector => result_4 )
                      , tup2_2_sel1_machinestate => ( machinestate_sel0_mstatus => \c$arg\.machinestate_sel0_mstatus
                      , machinestate_sel1_mcause => ( mcause_sel0_interrupt => \c$app_arg_4\ = ('1')
@@ -433,7 +432,7 @@ begin
                      \c$case_alt_18\;
 
   -- src/Contranomy/Instruction.hs:289:20-36
-  \c$case_alt_18\ <= ( tup2_2_sel0_tup2_1 => ( tup2_1_sel0_maybe_0 => std_logic_vector'("1" & (\c$arg\.machinestate_sel6_mtval))
+  \c$case_alt_18\ <= ( tup2_2_sel0_tup2_1 => ( tup2_1_sel0_maybe_0 => "1" & \c$arg\.machinestate_sel6_mtval
                      , tup2_1_sel1_std_logic_vector => result_4 )
                      , tup2_2_sel1_machinestate => ( machinestate_sel0_mstatus => \c$arg\.machinestate_sel0_mstatus
                      , machinestate_sel1_mcause => \c$arg\.machinestate_sel1_mcause
@@ -445,7 +444,7 @@ begin
                      , machinestate_sel7_irqmask => \c$arg\.machinestate_sel7_irqmask ) ) when lvl10 else
                      \c$case_alt_19\;
 
-  -- indexBitVector begin 
+  -- indexBitVector begin
   indexbitvector_2 : block
     signal vec_index_2 : integer range 0 to 32-1;
   begin
@@ -460,7 +459,7 @@ begin
   -- indexBitVector end
 
   -- src/Contranomy/Instruction.hs:297:22-38
-  \c$case_alt_19\ <= ( tup2_2_sel0_tup2_1 => ( tup2_1_sel0_maybe_0 => std_logic_vector'("1" & (\c$arg\.machinestate_sel7_irqmask))
+  \c$case_alt_19\ <= ( tup2_2_sel0_tup2_1 => ( tup2_1_sel0_maybe_0 => "1" & \c$arg\.machinestate_sel7_irqmask
                      , tup2_1_sel1_std_logic_vector => result_4 )
                      , tup2_2_sel1_machinestate => ( machinestate_sel0_mstatus => \c$arg\.machinestate_sel0_mstatus
                      , machinestate_sel1_mcause => \c$arg\.machinestate_sel1_mcause
@@ -473,26 +472,27 @@ begin
                      \c$case_alt_20\;
 
   -- src/Contranomy/Core/CSR.hs:94:10-28
-  lvl9 <= \c$case_scrut\.decodedinstruction_sel12_imm12i = std_logic_vector'(x"330");
+  lvl9 <= \c$case_scrut\.decodedinstruction_sel12_imm12i = IRQMASK;
 
   -- src/Contranomy/Instruction.hs:298:22-38
   \c$case_alt_20\ <= ( tup2_2_sel0_tup2_1 => lvl7
                      , tup2_2_sel1_machinestate => \c$arg\ ) when lvl8 else
-                     ( tup2_2_sel0_tup2_1 => ( tup2_1_sel0_maybe_0 => std_logic_vector'("0" & "--------------------------------")
+                     ( tup2_2_sel0_tup2_1 => ( tup2_1_sel0_maybe_0 => "0" & "--------------------------------"
                      , tup2_1_sel1_std_logic_vector => std_logic_vector'(0 to 31 => '-') )
                      , tup2_2_sel1_machinestate => \c$arg\ );
 
   -- src/Contranomy/Core/CSR.hs:94:10-28
-  lvl8 <= \c$case_scrut\.decodedinstruction_sel12_imm12i = std_logic_vector'(x"360");
+  lvl8 <= \c$case_scrut\.decodedinstruction_sel12_imm12i = IRQPENDING;
 
   lvl7 <= ( tup2_1_sel0_maybe_0 => lvl5
           , tup2_1_sel1_std_logic_vector => result_3 );
 
   -- src/Contranomy/Core/CSR.hs:(164,1)-(173,32)
-  result_3 <= \c$case_alt_23\ when std_match("01", \csrType1\) else
-              \c$case_alt_22\ when std_match("10", \csrType1\) else
-              \c$case_alt_21\ when std_match("11", \csrType1\) else
-              \externalInterrupt\;
+  with \csrType1\ select
+      result_3 <= \c$case_alt_23\ when READ_WRITE,
+                  \c$case_alt_22\ when READ_SET,
+                  \c$case_alt_21\ when READ_CLEAR,
+                  \externalInterrupt\ when others;
 
   -- src/Contranomy/Core/CSR.hs:171:3-56
   with (\c$writeValue1_case_alt\(32 downto 32)) select
@@ -512,30 +512,31 @@ begin
   x_1 <= \c$writeValue1_case_alt\(31 downto 0);
 
   -- src/Contranomy/Core/CSR.hs:151:16-49
-  lvl5 <= std_logic_vector'("1" & (\externalInterrupt\));
+  lvl5 <= "1" & \externalInterrupt\;
 
   -- src/Contranomy/Core/CSR.hs:108:24-47
   -- src/Contranomy/Clash/Extra.hs:46:1-33
-  \c$oldValue_app_arg\ <= std_logic_vector'(x"00000008") when \softwareInterrupt\ else
-                          std_logic_vector'(x"00000000");
+  \c$oldValue_app_arg\ <= x"00000008" when \softwareInterrupt\ else
+                          x"00000000";
 
   -- src/Contranomy/Core/CSR.hs:107:24-44
   -- src/Contranomy/Clash/Extra.hs:46:1-33
-  \c$oldValue_app_arg_0\ <= std_logic_vector'(x"00000080") when \timerInterrupt\ else
-                            std_logic_vector'(x"00000000");
+  \c$oldValue_app_arg_0\ <= x"00000080" when \timerInterrupt\ else
+                            x"00000000";
 
-  \c$oldValue_app_arg_1_selection_res\ <= \externalInterrupt\ /= std_logic_vector'(x"00000000");
+  \c$oldValue_app_arg_1_selection_res\ <= \externalInterrupt\ /= x"00000000";
 
   -- src/Contranomy/Core/CSR.hs:106:24-55
   -- src/Contranomy/Clash/Extra.hs:46:1-33
-  \c$oldValue_app_arg_1\ <= std_logic_vector'(x"00000800") when \c$oldValue_app_arg_1_selection_res\ else
-                            std_logic_vector'(x"00000000");
+  \c$oldValue_app_arg_1\ <= x"00000800" when \c$oldValue_app_arg_1_selection_res\ else
+                            x"00000000";
 
   -- src/Contranomy/Core/CSR.hs:(164,1)-(173,32)
-  result_4 <= \c$case_alt_26\ when std_match("01", \csrType1\) else
-              \c$case_alt_25\ when std_match("10", \csrType1\) else
-              \c$case_alt_24\ when std_match("11", \csrType1\) else
-              \c$csrWriteOut_app_arg\;
+  with \csrType1\ select
+      result_4 <= \c$case_alt_26\ when READ_WRITE,
+                  \c$case_alt_25\ when READ_SET,
+                  \c$case_alt_24\ when READ_CLEAR,
+                  \c$csrWriteOut_app_arg\ when others;
 
   -- src/Contranomy/Core/CSR.hs:171:3-56
   with (\c$writeValue1_case_alt\(32 downto 32)) select
@@ -565,18 +566,18 @@ begin
 
   -- src/Contranomy/Core/CSR.hs:96:40-49
   -- src/Contranomy/Clash/Extra.hs:46:1-33
-  \c$oldValue1_app_arg\ <= std_logic_vector'(x"00000008") when \c$oldValue1_app_arg_selection\ else
-                           std_logic_vector'(x"00000000");
+  \c$oldValue1_app_arg\ <= x"00000008" when \c$oldValue1_app_arg_selection\ else
+                           x"00000000";
 
   \c$oldValue1_app_arg_0_selection\ <= \c$arg\.machinestate_sel0_mstatus.mstatus_sel1_mpie;
 
   -- src/Contranomy/Core/CSR.hs:96:24-34
   -- src/Contranomy/Clash/Extra.hs:46:1-33
-  \c$oldValue1_app_arg_0\ <= std_logic_vector'(x"00000080") when \c$oldValue1_app_arg_0_selection\ else
-                             std_logic_vector'(x"00000000");
+  \c$oldValue1_app_arg_0\ <= x"00000080" when \c$oldValue1_app_arg_0_selection\ else
+                             x"00000000";
 
   -- src/Contranomy/Core/CSR.hs:94:10-28
-  lvl18 <= \c$case_scrut\.decodedinstruction_sel12_imm12i = std_logic_vector'(x"300");
+  lvl18 <= \c$case_scrut\.decodedinstruction_sel12_imm12i = CSR_MSTATUS;
 
   \c$csrWriteOut_case_alt\ <= \c$oldValue1_0\ when lvl15 else
                               \c$csrWriteOut_case_alt_0\;
@@ -589,25 +590,25 @@ begin
 
   -- src/Contranomy/Core/CSR.hs:112:57-67
   -- src/Contranomy/Clash/Extra.hs:46:1-33
-  \c$oldValue1_app_arg_1\ <= std_logic_vector'(x"00000008") when \c$oldValue1_app_arg_1_selection\ else
-                             std_logic_vector'(x"00000000");
+  \c$oldValue1_app_arg_1\ <= x"00000008" when \c$oldValue1_app_arg_1_selection\ else
+                             x"00000000";
 
   \c$oldValue1_app_arg_2_selection\ <= \c$arg\.machinestate_sel3_mie.mie_sel1_mtie;
 
   -- src/Contranomy/Core/CSR.hs:112:41-51
   -- src/Contranomy/Clash/Extra.hs:46:1-33
-  \c$oldValue1_app_arg_2\ <= std_logic_vector'(x"00000080") when \c$oldValue1_app_arg_2_selection\ else
-                             std_logic_vector'(x"00000000");
+  \c$oldValue1_app_arg_2\ <= x"00000080" when \c$oldValue1_app_arg_2_selection\ else
+                             x"00000000";
 
   \c$oldValue1_app_arg_3_selection\ <= \c$arg\.machinestate_sel3_mie.mie_sel0_meie;
 
   -- src/Contranomy/Core/CSR.hs:112:24-35
   -- src/Contranomy/Clash/Extra.hs:46:1-33
-  \c$oldValue1_app_arg_3\ <= std_logic_vector'(x"00000800") when \c$oldValue1_app_arg_3_selection\ else
-                             std_logic_vector'(x"00000000");
+  \c$oldValue1_app_arg_3\ <= x"00000800" when \c$oldValue1_app_arg_3_selection\ else
+                             x"00000000";
 
   -- src/Contranomy/Core/CSR.hs:94:10-28
-  lvl15 <= \c$case_scrut\.decodedinstruction_sel12_imm12i = std_logic_vector'(x"304");
+  lvl15 <= \c$case_scrut\.decodedinstruction_sel12_imm12i = CSR_MIE;
 
   \c$csrWriteOut_case_alt_0\ <= \c$oldValue1_1\ when lvl14 else
                                 \c$csrWriteOut_case_alt_1\;
@@ -618,47 +619,48 @@ begin
   \c$oldValue1_1\ <= \c$arg\.machinestate_sel2_mtvec;
 
   -- src/Contranomy/Core/CSR.hs:94:10-28
-  lvl14 <= \c$case_scrut\.decodedinstruction_sel12_imm12i = std_logic_vector'(x"305");
+  lvl14 <= \c$case_scrut\.decodedinstruction_sel12_imm12i = CSR_MTVEC;
 
   \c$csrWriteOut_case_alt_1\ <= \c$arg\.machinestate_sel4_mscratch when lvl13 else
                                 \c$csrWriteOut_case_alt_2\;
 
   -- src/Contranomy/Core/CSR.hs:94:10-28
-  lvl13 <= \c$case_scrut\.decodedinstruction_sel12_imm12i = std_logic_vector'(x"340");
+  lvl13 <= \c$case_scrut\.decodedinstruction_sel12_imm12i = TRAP_MSCRATCH;
 
   \c$csrWriteOut_case_alt_2\ <= \c$oldValue1_2\ when lvl12 else
                                 \c$csrWriteOut_case_alt_3\;
 
   -- src/Contranomy/Core/CSR.hs:130:13-33
   -- src/Contranomy/Core/CSR.hs:130:24-33
-  \c$oldValue1_2\ <= std_logic_vector'(std_logic_vector'(\c$arg\.machinestate_sel5_mepc) & std_logic_vector'(std_logic_vector'("00")));
+  \c$oldValue1_2\ <= \c$arg\.machinestate_sel5_mepc & "00";
 
   -- src/Contranomy/Core/CSR.hs:94:10-28
-  lvl12 <= \c$case_scrut\.decodedinstruction_sel12_imm12i = std_logic_vector'(x"341");
+  lvl12 <= \c$case_scrut\.decodedinstruction_sel12_imm12i = TRAP_MEPC;
 
   \c$csrWriteOut_case_alt_3\ <= \c$oldValue1_3\ when lvl11 else
                                 \c$csrWriteOut_case_alt_4\;
 
   -- src/Contranomy/Core/CSR.hs:135:13-52
   -- src/Contranomy/Core/CSR.hs:135:24-52
-  \c$oldValue1_3\ <= std_logic_vector'(std_logic_vector'((std_logic_vector'(std_logic_vector'(\c$oldValue1_app_arg_4\) & std_logic_vector'(std_logic_vector'("000000000000000000000000000"))))) & std_logic_vector'(\c$arg\.machinestate_sel1_mcause.mcause_sel1_code));
+  \c$oldValue1_3\ <= \c$oldValue1_app_arg_4\ & "000000000000000000000000000" & \c$arg\.machinestate_sel1_mcause.mcause_sel1_code;
 
   \c$oldValue1_app_arg_4_selection\ <= \c$arg\.machinestate_sel1_mcause.mcause_sel0_interrupt;
 
-  \c$oldValue1_app_arg_4\ <= std_logic_vector'("1") when \c$oldValue1_app_arg_4_selection\ else
-                             std_logic_vector'("0");
+  \c$oldValue1_app_arg_4\ <= "1" when \c$oldValue1_app_arg_4_selection\ else
+                             "0";
 
   -- src/Contranomy/Core/CSR.hs:94:10-28
-  lvl11 <= \c$case_scrut\.decodedinstruction_sel12_imm12i = std_logic_vector'(x"342");
+  lvl11 <= \c$case_scrut\.decodedinstruction_sel12_imm12i = TRAP_MCAUSE;
 
   \c$csrWriteOut_case_alt_4\ <= \c$arg\.machinestate_sel6_mtval when lvl10 else
                                 \c$arg\.machinestate_sel7_irqmask;
 
   -- src/Contranomy/Core/CSR.hs:94:10-28
-  lvl10 <= \c$case_scrut\.decodedinstruction_sel12_imm12i = std_logic_vector'(x"343");
+  lvl10 <= \c$case_scrut\.decodedinstruction_sel12_imm12i = TRAP_MTVAL;
 
-  \c$writeValue1_case_alt\ <= std_logic_vector'("1" & (\writeValue0\)) when std_match("01", \csrType1\) else
-                              \c$writeValue1_case_alt_0\;
+  with \csrType1\ select
+      \c$writeValue1_case_alt\ <= "1" & \writeValue0\ when READ_WRITE,
+                                  \c$writeValue1_case_alt_0\ when others;
 
   \csrType1\ <= ds17.tup2_8_sel1_csrtype;
 
@@ -667,8 +669,8 @@ begin
   -- src/Contranomy/Core/CSR.hs:91:15-23
   -- src/Contranomy/Instruction.hs:128:3-23
   -- src/Contranomy/Instruction.hs:123:1-28
-  \c$writeValue1_case_alt_0\ <= std_logic_vector'("0" & "--------------------------------") when \c$writeValue1_case_alt_0_selection_res\ else
-                                std_logic_vector'("1" & (\writeValue0\));
+  \c$writeValue1_case_alt_0\ <= "0" & "--------------------------------" when \c$writeValue1_case_alt_0_selection_res\ else
+                                "1" & \writeValue0\;
 
   \writeValue0\ <= ds17.tup2_8_sel0_std_logic_vector;
 
@@ -677,14 +679,11 @@ begin
   -- src/Contranomy/Core/CSR.hs:83:19-39
   -- src/Contranomy/Instruction.hs:324:1-26
   ds17 <= ( tup2_8_sel0_std_logic_vector => \rs1Val\
-          , tup2_8_sel1_csrtype => t_0 ) when std_match("0--", \c$ds17_case_scrut\) else
-          ( tup2_8_sel0_std_logic_vector => std_logic_vector'(std_logic_vector'(std_logic_vector'("000000000000000000000000000")) & std_logic_vector'(\c$writeValue1_app_arg\))
+          , tup2_8_sel1_csrtype => t ) when std_match("0--", \c$ds17_case_scrut\) else
+          ( tup2_8_sel0_std_logic_vector => "000000000000000000000000000" & \c$writeValue1_app_arg\
           , tup2_8_sel1_csrtype => t );
 
   t <= \c$ds17_case_scrut\(1 downto 0);
-
-  t_0 <= \c$ds17_case_scrut\(1 downto 0);
-
   \c$ds17_case_scrut\ <= \c$case_scrut\.decodedinstruction_sel15_func3;
 
   \c$writeValue1_app_arg\ <= \c$case_scrut\.decodedinstruction_sel2_rs1;
@@ -695,7 +694,5 @@ begin
       , w      => instruction );
 
   result <= \c$case_alt\;
-
-
 end;
 

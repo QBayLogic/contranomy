@@ -54,6 +54,42 @@ package contranomy_types is
   constant MOP_REM    : mop := "110";
   constant MOP_REMU   : mop := "111";
 
+  -- CSR Type
+
+  subtype csr_type is std_logic_vector(1 downto 0);
+
+  constant CSR_ILL    : csr_type := "00";
+  constant READ_WRITE : csr_type := "01";
+  constant READ_SET   : csr_type := "10";
+  constant READ_CLEAR : csr_type := "11";
+
+  -- Machine Trap Setup
+
+  subtype csr_register is std_logic_vector(11 downto 0);
+
+  constant CSR_MSTATUS    : csr_register := x"300"; -- Machine status register
+  constant CSR_MISA       : csr_register := x"301"; -- ISA and extensions
+  constant CSR_MEDELEG    : csr_register := x"302"; -- Machine exception delegation register
+  constant CSR_MIDELEG    : csr_register := x"303"; -- Machine interrupt delegation register
+  constant CSR_MIE        : csr_register := x"304"; -- Machine interrupt enable register
+  constant CSR_MTVEC      : csr_register := x"305"; -- Machine trap-handler base address
+  constant CSR_MCOUNTEREN : csr_register := x"306"; -- Machine counter enable
+  constant CSR_MSTATUSH   : csr_register := x"307"; -- Additional machine status register, RV32 only
+
+  -- Machine Trap Handling
+
+  constant TRAP_MSCRATCH : csr_register := x"340"; -- Scratch register for machine trap handlers
+  constant TRAP_MEPC     : csr_register := x"341"; -- Machine exception program counter
+  constant TRAP_MCAUSE   : csr_register := x"342"; -- Machine trap cause
+  constant TRAP_MTVAL    : csr_register := x"343"; -- Machine bad address instruction
+  constant TRAP_MIP      : csr_register := x"344"; -- Machine interrupt pending
+  constant TRAP_MTINST   : csr_register := x"34A"; -- Machine trap instruction (transformed)
+  constant TRAP_MTVAL2   : csr_register := x"34B"; -- Machine bad guest physical address
+
+  -- Architecture-specific Registers
+
+  constant IRQMASK    : csr_register := x"330";
+  constant IRQPENDING : csr_register := x"360";
 
   subtype machine_word is std_logic_vector(31 downto 0);
   subtype pc is std_logic_vector(29 downto 0);
@@ -268,7 +304,7 @@ end;
 package body contranomy_types is
   function toSLV (b : in shift_mode) return std_logic_vector is
   begin
-    case b is 
+    case b is
       when shift_mode_logical => return "0";
       when shift_mode_arithmetic => return "1";
     end case;
@@ -342,43 +378,6 @@ package body contranomy_types is
   constant BC_GEU  : branch_cond := "101";
   constant BC_ILL1 : branch_cond := "110";
   constant BC_ILL2 : branch_cond := "111";
-
-  -- Machine Trap Setup
-
-  subtype csr_register is std_logic_vector(11 downto 0);
-
-  constant CSR_MSTATUS    : csr_register := x"300"; -- Machine status register
-  constant CSR_MISA       : csr_register := x"301"; -- ISA and extensions
-  constant CSR_MEDELEG    : csr_register := x"302"; -- Machine exception delegation register
-  constant CSR_MIDELEG    : csr_register := x"303"; -- Machine interrupt delegation register
-  constant CSR_MIE        : csr_register := x"304"; -- Machine interrupt enable register
-  constant CSR_MTVEC      : csr_register := x"305"; -- Machine trap-handler base address
-  constant CSR_MCOUNTEREN : csr_register := x"306"; -- Machine counter enable
-  constant CSR_MSTATUSH   : csr_register := x"307"; -- Additional machine status register, RV32 only
-
-  -- Machine Trap Handling
-
-  constant TRAP_MSCRATCH : csr_register := x"340"; -- Scratch register for machine trap handlers
-  constant TRAP_MEPC     : csr_register := x"341"; -- Machine exception program counter
-  constant TRAP_MCAUSE   : csr_register := x"342"; -- Machine trap cause
-  constant TRAP_MTVAL    : csr_register := x"343"; -- Machine bad address instruction
-  constant TRAP_MIP      : csr_register := x"344"; -- Machine interrupt pending
-  constant TRAP_MTINST   : csr_register := x"34A"; -- Machine trap instruction (transformed)
-  constant TRAP_MTVAL2   : csr_register := x"34B"; -- Machine bad guest physical address
-
-  -- Architecture-specific Registers
-
-  constant IRQMASK    : csr_register := x"330";
-  constant IEQPENDING : csr_register := x"360";
-
-  -- CSR Type
-
-  subtype csr_type is std_logic_vector(1 downto 0);
-
-  constant CSR_ILL    : csr_type := "00";
-  constant READ_WRITE : csr_type := "01";
-  constant READ_SET   : csr_type := "10";
-  constant READ_CLEAR : csr_type := "11";
 
   -- System12
 
